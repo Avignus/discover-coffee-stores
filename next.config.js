@@ -3,7 +3,7 @@ const allowedDomains = process.env.NEXT_IMAGE_ALLOWED_DOMAINS;
 const nextConfig = {
     reactStrictMode: true,
     images: {
-        domains: [allowedDomains],
+        domains: [process.env.NEXT_IMAGE_ALLOWED_DOMAINS],
     },
 };
 
