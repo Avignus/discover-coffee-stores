@@ -1,0 +1,10 @@
+@media (max-width: 1088px) {
+  .footerContainer {
+    height: 3vh;
+    width: 100%;
+    padding-bottom: 3vh;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+}
