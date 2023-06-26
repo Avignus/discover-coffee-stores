@@ -40,7 +40,7 @@ export const fetchCoffeeStores = async (
     coffeeStoresData = await response.text();
     // console.log(JSON.stringify(JSON.parse(coffeeStoresData), null, 2));
     coffeeStoresData = await JSON.parse(coffeeStoresData);
-    return coffeeStoresData.results.map((venue, index) => {
+    return coffeeStoresData.results?.map((venue, index) => {
         return {
             // ...venue,
             id: venue.fsq_id,
