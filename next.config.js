@@ -1,8 +1,9 @@
 /** @type {import('next').NextConfig} */
+const allowedDomains = process.env.NEXT_IMAGE_ALLOWED_DOMAINS;
 const nextConfig = {
     reactStrictMode: true,
     images: {
-        domains: ["images.unsplash.com"],
+        domains: [allowedDomains],
     },
 };
 
