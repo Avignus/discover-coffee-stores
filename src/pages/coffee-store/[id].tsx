@@ -194,6 +194,7 @@ export default function CoffeeStore(props: any) {
             <div className={styles.layout}>
                 <Head>
                     <title>{name}</title>
+                    <meta name="description" content={`${name}`} />
                 </Head>
                 <div className={styles.container}>
                     <div className={styles.col1}>
@@ -204,6 +205,7 @@ export default function CoffeeStore(props: any) {
                             <h1 className={styles.name}>{name}</h1>
                         </div>
                         <Image
+                            alt="banner-image"
                             src={
                                 imgUrl ||
                                 "https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80"
@@ -211,7 +213,6 @@ export default function CoffeeStore(props: any) {
                             width={600}
                             height={360}
                             className={styles.storeImg}
-                            alt={name}
                         />
                     </div>
                     <div className={cls("glass", styles.col2)}>

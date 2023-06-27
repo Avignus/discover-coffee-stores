@@ -77,6 +77,10 @@ export default function Home(props: props) {
         <div>
             <Head>
                 <title>Coffee Connoisseur</title>
+                <meta
+                    name="description"
+                    content="allows you to discover coffee stores"
+                />
             </Head>
             <main className={styles.container}>
                 <div className={styles.bannerSection}>
@@ -97,7 +101,7 @@ export default function Home(props: props) {
                     <div className={styles.heroImage}>
                         <Image
                             src="/static/hero-image.png"
-                            alt="hero-background"
+                            alt="hero-image"
                             width={700}
                             height={400}
                         />

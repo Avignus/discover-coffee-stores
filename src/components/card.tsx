@@ -21,7 +21,7 @@ const Card = (props: props) => {
                         src={props.imgUrl}
                         width={260}
                         height={160}
-                        alt="image-url"
+                        alt={props.name}
                     />
                 </div>
             </div>
