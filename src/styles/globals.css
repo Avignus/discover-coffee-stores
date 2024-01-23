@@ -112,7 +112,7 @@ button:focus {
   border: 1px solid hsla(0, 0%, 100%, 0.2);
 }
 
-.glass:hover {
+/* .glass:hover {
   background: hsla(0, 0%, 100%, 0.7);
   border: 1px solid #fff;
-}
+} */

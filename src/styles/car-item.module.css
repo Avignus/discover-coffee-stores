@@ -6,9 +6,7 @@
   padding-right: 0.75rem /* 12px */;
 }
 
-.layout {
-  height: 100%;
-}
+
 
 .col1 {
   place-self: center;
@@ -20,6 +18,7 @@
   line-height: 1.75rem /* 28px */;
   margin-bottom: 0.5rem /* 8px */;
   font-weight: 700;
+  color: white;
 }
 
 .nameWrapper {
