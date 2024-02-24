@@ -1,4 +1,4 @@
-import styles from "./banner.module.css"
+import styles from "../styles/banner.module.css"
 
 type propsTypes = {
     buttonText: string

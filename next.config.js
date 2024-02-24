@@ -8,6 +8,8 @@ const nextConfig = {
             "images.unsplash.com",
             "motortudo.com",
             "www.webmotors.com.br",
+            "example.com",
+            "www.cnnbrasil.com.br",
         ],
     },
 }

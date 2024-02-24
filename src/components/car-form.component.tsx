@@ -4,6 +4,7 @@ import * as z from "zod"
 import { baseUrl } from "@/lib/config"
 import { dispatchCarsList } from "@/lib/cars-list"
 import { StoreContext } from "@/store/store-context"
+import { generateRandomCarData } from "@/utils"
 
 const carSchema = z.object({
     name: z.string().max(255).optional(),
@@ -14,8 +15,8 @@ const carSchema = z.object({
     color: z.string().max(255).nonempty(),
     year: z.string().min(4).max(4).nonempty(),
     category: z.string().max(255).nonempty(),
-    mileage: z.number().nonnegative(),
-    price: z.number().nonnegative().positive(),
+    mileage: z.string().nonempty(),
+    price: z.string().nonempty(),
 })
 
 interface CarData {
@@ -27,8 +28,8 @@ interface CarData {
     color: string
     year: string
     category: string
-    mileage: number
-    price: number
+    mileage: string
+    price: string
 }
 
 type CarFormProps = {
@@ -36,6 +37,25 @@ type CarFormProps = {
     setLoading: (condition: boolean) => void
     setModal: (condition: boolean) => void
 }
+
+export const maskCurrencyInput = (value: string, type = "$"): string => {
+    value = value.replace(/\D/g, "")
+    value = value.replace(/(\d)(\d{2})$/, "$1,$2")
+    value = value.replace(/(?=(\d{3})+(\D))\B/g, ".")
+
+    return `${type} ${value}`
+}
+
+export const formatToBRLCurrency = (
+    value: number,
+    maximumFractionDigits: number = 2
+): string => {
+    return value?.toLocaleString("pt-br", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits,
+    })
+}
+
 const CarForm = ({ onClose, setLoading, setModal }: CarFormProps) => {
     const [formData, setFormData] = useState<CarData>({
         imgUrl: "",
@@ -45,10 +65,10 @@ const CarForm = ({ onClose, setLoading, setModal }: CarFormProps) => {
         color: "",
         year: "",
         category: "",
-        mileage: 0,
-        price: 0,
+        mileage: "",
+        price: "",
     })
-    const { dispatch, state } = useContext(StoreContext)
+    const { dispatch } = useContext(StoreContext)
     const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const key = event.target.name
         const value =
@@ -64,7 +84,9 @@ const CarForm = ({ onClose, setLoading, setModal }: CarFormProps) => {
         event.preventDefault()
 
         // Validate using Zod schema
-        const validationResult = carSchema.safeParse(formData)
+        const validationResult = carSchema.safeParse({
+            ...formData,
+        })
 
         if (validationResult.success) {
             console.log("Form submitted with data:", validationResult.data)
@@ -77,7 +99,7 @@ const CarForm = ({ onClose, setLoading, setModal }: CarFormProps) => {
                         headers: {
                             "Content-Type": "application/json",
                         },
-                        body: JSON.stringify(validationResult.data), // Stringify for JSON body
+                        body: JSON.stringify(validationResult.data),
                     })
                     if (response && dispatch) {
                         dispatchCarsList(dispatch)
@@ -85,22 +107,23 @@ const CarForm = ({ onClose, setLoading, setModal }: CarFormProps) => {
                     console.log({ response })
                 } catch (error) {
                     console.error("Error sending request:", error)
-                    // Handle request errors here
                 } finally {
                     setLoading(false)
                     setModal(false)
                 }
             }
-
-            // Handle form submission logic here
         } else {
             console.error("Validation error:", validationResult.error.errors)
         }
     }
 
+    const fillFormRandomly = () => {
+        const data = generateRandomCarData()
+        setFormData(data)
+    }
     return (
-        <div className="flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 w-[500px] h-[1000px]">
-            <div className="max-w-md w-full space-y-5">
+        <div className="flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8 w-[500px] h-[1150px]">
+            <div className="max-w-md w-full space-y-5 h-[100%]">
                 <div
                     onClick={onClose}
                     className="w-[100%] flex items-center justify-end"
@@ -114,7 +137,7 @@ const CarForm = ({ onClose, setLoading, setModal }: CarFormProps) => {
                         Car Information
                     </h2>
                 </div>
-                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+                <form className="space-y-6 p-3" onSubmit={handleSubmit}>
                     <div>
                         <label className="text-black" htmlFor="model">
                             Model:
@@ -180,8 +203,6 @@ const CarForm = ({ onClose, setLoading, setModal }: CarFormProps) => {
                         />
                     </div>
 
-                    {/* ...Similar TextInput fields for other properties of CarData... */}
-
                     <div>
                         <label className="text-black" htmlFor="year">
                             Year:
@@ -203,9 +224,11 @@ const CarForm = ({ onClose, setLoading, setModal }: CarFormProps) => {
                         <TextInput
                             id="mileage"
                             name="mileage"
-                            type="number"
                             placeholder="Mileage"
-                            value={formData.mileage}
+                            value={maskCurrencyInput(
+                                String(formData.mileage),
+                                "mi"
+                            )}
                             onChange={handleChange}
                         />
                     </div>
@@ -217,9 +240,8 @@ const CarForm = ({ onClose, setLoading, setModal }: CarFormProps) => {
                         <TextInput
                             id="price"
                             name="price"
-                            type="number"
                             placeholder="Price"
-                            value={String(formData.price)}
+                            value={maskCurrencyInput(String(formData.price))}
                             onChange={handleChange}
                         />
                     </div>
@@ -243,6 +265,14 @@ const CarForm = ({ onClose, setLoading, setModal }: CarFormProps) => {
                         </button>
                     </div>
                 </form>
+                <div className="flex justify-end w-[100%]">
+                    <button
+                        onClick={fillFormRandomly}
+                        className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded"
+                    >
+                        Mock (dev)
+                    </button>
+                </div>
             </div>
         </div>
     )

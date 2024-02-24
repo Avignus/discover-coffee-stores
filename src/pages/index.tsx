@@ -3,17 +3,11 @@ import Image from "next/image"
 import styles from "../styles/Home.module.css"
 import Banner from "../components/banner.component"
 import Card from "@/components/card"
-// import coffeeStoresData from "../../data/coffee-stores.json";
-
-import type { InferGetStaticPropsType, GetStaticProps } from "next"
+import type { GetStaticProps } from "next"
 import useTrackLocation from "@/hooks/use-track-location"
 import { dispatchCarsList, fetchCarsList } from "@/lib/cars-list"
 import { useContext, useEffect, useState } from "react"
-import {
-    CarItem,
-    SetCarsListActionKind,
-    StoreContext,
-} from "@/store/store-context"
+import { CarItem, StoreContext } from "@/store/store-context"
 import Modal from "@/components/modal.module"
 import CarForm from "@/components/car-form.component"
 import LoadingSpinner from "@/components/loading-spinner"
@@ -32,7 +26,7 @@ export const getStaticProps: GetStaticProps<{}> = async () => {
         },
     }
 }
-export default function Home(props: props) {
+export default function Home() {
     const { dispatch, state } = useContext(StoreContext)
     const [isModalOpen, setModalOpen] = useState(false)
     const [isLoadingState, setLoadingState] = useState(false)
@@ -56,10 +50,7 @@ export default function Home(props: props) {
         <div className="min-h-screen">
             <Head>
                 <title>Car Consulting</title>
-                <meta
-                    name="description"
-                    content="allows you to discover coffee stores"
-                />
+                <meta name="description" content="allows you to cars" />
             </Head>
             <main className={styles.container}>
                 {isLoadingState ? (
@@ -74,18 +65,21 @@ export default function Home(props: props) {
                         />
                         <div className={styles.heroImage}>
                             <Image
-                                src="/static/hero-image.png"
+                                className="carLogo"
+                                src="/static/car-logo.jpg"
                                 alt="hero-image"
                                 width={700}
                                 height={400}
+                                style={{ borderRadius: "50%" }}
                             />
                         </div>
                         {carsList?.length > 0 ? (
                             <div className={styles.sectionWrapper}>
-                                <h2 className={styles.heading2}>Cars list</h2>
+                                <h2 className={styles.heading2}>Cars</h2>
                                 <div className={styles.cardLayout}>
                                     {carsList?.map((carItem: CarItem) => (
                                         <Card
+                                            id={carItem.id}
                                             key={carItem.id}
                                             className={styles.card}
                                             imgUrl={

@@ -14,52 +14,53 @@ export type CarItem = {
     price: number
 }
 
-const initialState: CoffeeStoresState = {
+const initialState: CarsStoreState = {
     state: {
         carsList: [],
-        latLong: "",
+        loading: false,
     },
-    dispatch: null,
+    dispatch: () => null,
 }
 
 export type CarStoresPayload = {
-    latLong?: string
     carsList?: Promise<Array<CarItem>>
+    loading?: boolean
 }
-type CoffeeStoresState = {
+type CarsStoreState = {
     state: {
         carsList: Array<CarItem>
-        latLong: string
+        loading: false
     }
-    dispatch: Dispatch<CarsListAction> | null
+    dispatch: Dispatch<CarsListAction>
 }
 export const ACTION_TYPES = {
-    SET_LAT_LONG: "SET_LAT_LONG",
-    SET_COFFEE_STORES: "SET_CARS_LIST",
+    SET_CARS_LIST: "SET_CARS_LIST",
+    SET_LOADING: "SET_LOADING",
 }
 
 export enum SetCarsListActionKind {
-    SET_LAT_LONG = "SET_LAT_LONG",
     SET_CARS_LIST = "SET_CARS_LIST",
+    SET_LOADING = "SET_LOADING",
 }
 type TypeAction =
     | SetCarsListActionKind.SET_CARS_LIST
-    | SetCarsListActionKind.SET_LAT_LONG
+    | SetCarsListActionKind.SET_LOADING
+
 export type CarsListAction = {
     type: TypeAction
     payload: CarStoresPayload
 }
 
-const storeReducer = (
-    state: CoffeeStoresState,
-    action: CarsListAction
-): any => {
+const storeReducer = (state: CarsStoreState, action: CarsListAction): any => {
     switch (action.type) {
-        case ACTION_TYPES.SET_LAT_LONG: {
-            return { ...state, latLong: action.payload.latLong }
-        }
-        case ACTION_TYPES.SET_COFFEE_STORES: {
+        case ACTION_TYPES.SET_CARS_LIST: {
             return { ...state, carsList: action.payload.carsList }
+        }
+        case ACTION_TYPES.SET_LOADING: {
+            return {
+                ...state,
+                loading: action.payload.loading,
+            }
         }
         default:
             throw new Error(`Unhandled action type: ${action.type}`)

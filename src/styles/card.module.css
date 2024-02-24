@@ -16,15 +16,25 @@
   padding-bottom: 1.25rem /* 20px */;
   padding-left: 1rem /* 16px */;
   padding-right: 1rem /* 16px */;
-
+  width: 200px;
   backdrop-filter: blur(10px);
 }
 
 .cardHeaderWrapper {
+  display: flex;
+  justify-content: space-between;
   margin-top: 0.75rem /* 12px */;
   margin-bottom: 0.75rem /* 12px */;
 }
-
+.trashCan {
+  -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
+  filter: grayscale(100%);
+  transition: filter 0.3s ease;
+}
+.trashCan:hover {
+  -webkit-filter: grayscale(0%);
+  filter: none;
+}
 .cardHeader {
   text-overflow: ellipsis;
   white-space: nowrap;
